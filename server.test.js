@@ -8,9 +8,23 @@ const express = require('express');
 const authenticRequest = {
   headers: { authorization: 'test-auth-key' },
 };
-
 const unauthenticRequest = {
   headers: { authorization: 'test-auth-other-key' },
+};
+const remoteRequest = {
+  body: 'test-body',
+  cookies: 'test-cookies',
+  method: 'POST',
+  originalUrl: '/test/url',
+  headers: { 'test-header': 'test-value' },
+};
+const expectedRequestMsg = {
+  body: 'test-body',
+  cookies: 'test-cookies',
+  method: 'POST',
+  url: '/test/url',
+  headers: { 'test-header': 'test-value' },
+  reqID: 'test-uuid',
 };
 
 describe('server', () => {
@@ -32,6 +46,23 @@ describe('server', () => {
 
   afterAll(() => {
     process.env = originalEnv;
+  });
+
+  it('should setup express parsers and request handler', () => {
+    jest.isolateModules(() => require('./server'));
+
+    expect(mockApp.use).toHaveBeenCalledTimes(2);
+    expect(mockApp.use).toHaveBeenCalledWith('mock-cookie-parser');
+    expect(mockApp.use).toHaveBeenCalledWith('mock-json-parser');
+    expect(mockApp.all).toHaveBeenCalledTimes(1);
+    expect(mockApp.all.mock.calls[0][0]).toBe('*');
+
+    const requestCb = mockApp.all.mock.calls[0][1];
+    requestCb(remoteRequest, 'test-res');
+    expect(WebSocket.mock.ws.send).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(WebSocket.mock.ws.send.mock.calls[0][0])).toEqual(
+      expectedRequestMsg,
+    );
   });
 
   it('should start listening on port 7000 if port is not provided', () => {

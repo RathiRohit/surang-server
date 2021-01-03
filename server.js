@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const WebSocketServer = require('./lib/WebSocketServer');
 const { unauthorized } = require('./lib/authenticator');
 
@@ -18,6 +19,12 @@ const wss = new WebSocketServer(() => {
 });
 
 const app = express();
+app.use(cookieParser());
+app.use(express.json());
+app.all('*', (req, res) => {
+  wss.handleRequest(req, res);
+});
+
 const server = app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 server.on('upgrade', (request, socket, head) => {
   if (connectedToClient) {

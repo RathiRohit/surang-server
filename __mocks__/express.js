@@ -5,6 +5,11 @@ const mockServer = {
 const mockApp = {
   server: mockServer,
   listen: jest.fn().mockReturnValue(mockServer),
+  use: jest.fn(),
+  all: jest.fn(),
 };
 
-module.exports = () => mockApp;
+const mockExpress = () => mockApp;
+mockExpress.json = () => 'mock-json-parser';
+
+module.exports = mockExpress;
