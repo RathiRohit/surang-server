@@ -1,5 +1,8 @@
+/* eslint-disable no-console */
+
 require('dotenv').config();
 const express = require('express');
+const WebSocketServer = require('./lib/WebSocketServer');
 const { unauthorized } = require('./lib/authenticator');
 
 const PORT = process.env.PORT || 7000;
@@ -10,12 +13,13 @@ function rejectClient(socket, code, status, message) {
 }
 
 let connectedToClient = false;
+const wss = new WebSocketServer(() => {
+  connectedToClient = false;
+});
+
 const app = express();
-
-// eslint-disable-next-line no-console
 const server = app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
-
-server.on('upgrade', (request, socket) => {
+server.on('upgrade', (request, socket, head) => {
   if (connectedToClient) {
     rejectClient(
       socket,
@@ -36,5 +40,7 @@ server.on('upgrade', (request, socket) => {
     return;
   }
 
-  connectedToClient = true;
+  wss.handleUpgrade(request, socket, head, () => {
+    connectedToClient = true;
+  });
 });

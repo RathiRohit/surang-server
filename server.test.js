@@ -1,5 +1,8 @@
 /* eslint-disable global-require */
 
+jest.mock('ws');
+
+const WebSocket = require('ws');
 const express = require('express');
 
 const authenticRequest = {
@@ -112,5 +115,22 @@ describe('server', () => {
 
     upgradeCb(authenticRequest, mockSocket);
     expect(mockSocket.destroy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should not reject second client if first is already disconnected', () => {
+    process.env.AUTH_KEY = 'test-auth-key';
+    jest.isolateModules(() => require('./server'));
+
+    const upgradeCb = mockServer.on.mock.calls[0][1];
+    upgradeCb(authenticRequest, mockSocket);
+    expect(mockSocket.destroy).toHaveBeenCalledTimes(0);
+
+    upgradeCb(authenticRequest, mockSocket);
+    expect(mockSocket.destroy).toHaveBeenCalledTimes(1);
+
+    WebSocket.mock.ws.emitClose();
+
+    upgradeCb(authenticRequest, mockSocket);
+    expect(mockSocket.destroy).toHaveBeenCalledTimes(1);
   });
 });
