@@ -7,7 +7,10 @@ class MockWebSocket extends EventEmitter {
     super();
     this.emitClose = () => this.emit('close');
     this.emitMessage = (msg) => this.emit('message', JSON.stringify(msg));
+    this.emitPong = () => this.emit('pong');
     this.send = jest.fn();
+    this.ping = jest.fn();
+    this.terminate = jest.fn();
   }
 }
 const mockWebSocket = new MockWebSocket();
@@ -26,6 +29,7 @@ class MockServer extends EventEmitter {
       cb(mockWebSocket);
     });
 
+    this.emitClose = () => this.emit('close');
     mock.instance = this;
   }
 }

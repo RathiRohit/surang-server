@@ -37,6 +37,7 @@ describe('server', () => {
   };
 
   beforeEach(() => {
+    jest.useFakeTimers();
     process.env = { ...originalEnv };
     mockApp.listen.mockClear();
     mockServer.on.mockClear();
