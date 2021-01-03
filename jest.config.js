@@ -1,16 +1,22 @@
 module.exports = {
   clearMocks: true,
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
+  collectCoverageFrom: [
+    '**/*.js',
+    '!**/*.test.js',
+    '!**/node_modules/**',
+    '!**/coverage/**',
+    '!**/__mocks__/**',
+    '!.eslintrc.js',
+    '!jest.config.js',
   ],
   coverageProvider: 'babel',
   coverageThreshold: {
     global: {
-      branches: 90,
-      functions: 90,
-      lines: 90,
-      statements: -10,
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100,
     },
   },
   moduleFileExtensions: [
