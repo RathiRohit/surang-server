@@ -122,7 +122,7 @@ describe('server', () => {
     upgradeCb(authenticRequest, mockSocket);
     expect(mockSocket.write).toHaveBeenCalledTimes(1);
     expect(mockSocket.write).toHaveBeenCalledWith(
-      'HTTP/1.1 423 Locked\r\nX-Error: Already connected with another client.\r\n\r\n',
+      'HTTP/1.1 423 Locked\r\n\r\nAlready connected with another client.\r\n',
     );
     expect(mockSocket.destroy).toHaveBeenCalledTimes(1);
   });
@@ -135,8 +135,8 @@ describe('server', () => {
     upgradeCb(unauthenticRequest, mockSocket);
     expect(mockSocket.write).toHaveBeenCalledTimes(1);
     expect(mockSocket.write).toHaveBeenCalledWith(
-      'HTTP/1.1 401 Unauthorized\r\n'
-        + 'X-Error: Unauthorized. Please, configure with a valid Auth key.\r\n\r\n',
+      'HTTP/1.1 401 Unauthorized\r\n\r\n'
+        + 'Unauthorized. Please, configure with a valid Auth key.\r\n',
     );
     expect(mockSocket.destroy).toHaveBeenCalledTimes(1);
   });

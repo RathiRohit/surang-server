@@ -9,7 +9,7 @@ const { validate } = require('./lib/validator');
 const PORT = process.env.PORT || 7000;
 
 function rejectClient(socket, code, status, message) {
-  socket.write(`HTTP/1.1 ${code} ${status}\r\nX-Error: ${message}\r\n\r\n`);
+  socket.write(`HTTP/1.1 ${code} ${status}\r\n\r\n${message}\r\n`);
   socket.destroy();
 }
 
