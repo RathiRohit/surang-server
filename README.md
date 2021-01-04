@@ -15,7 +15,8 @@
 
 Surang allows you to expose your localhost server to the world through WebSocket based
 one-to-one tunnel. Surang is created to be easy to host on most of the hosting
-platforms that support NodeJS (read more at [How is Surang different from localtunnel?]()).
+platforms that support NodeJS (read more at [How is Surang different from localtunnel?
+](https://github.com/RathiRohit/surang-server#how-is-surang-different-from-localtunnel)).
 
 #### Server requirements:
 - Surang uses WebSocket connection to tunnel the traffic, hence hosting platform needs to
