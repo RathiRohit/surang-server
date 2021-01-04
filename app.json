@@ -1,0 +1,13 @@
+{
+  "name": "Surang server",
+  "description": "Self-hostable WebSocket based tunneling solution to expose your localhost.",
+  "repository": "https://github.com/RathiRohit/surang-server",
+  "logo": "https://github.com/RathiRohit/surang-server/raw/main/surang-app.png",
+  "env": {
+    "AUTH_KEY": {
+      "description": "Secret auth key to authenticate client. Configure this same in Surang client",
+      "generator": "secret"
+    }
+  },
+  "image": "heroku/nodejs"
+}
