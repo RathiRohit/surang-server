@@ -45,6 +45,15 @@ platforms that support NodeJS (read more at [How is Surang different from localt
     *If not defined, server will treat all clients as unauthorized. This is
     intentionally done so, to avoid skipping AUTH_KEY setup.*
 
+## One click hosting on Heroku:
+
+Click the button below to host latest version of Surang server on Heroku.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+(Note: `PORT` & `AUTH_KEY` will be set automatically. Get the AUTH_KEY from your
+Heroku app dashboard and configure the same in Surang client.
+
 ---
 
 Once server is up, install and configure your
