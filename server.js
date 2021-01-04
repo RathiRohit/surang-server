@@ -4,7 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const WebSocketServer = require('./lib/WebSocketServer');
-const { unauthorized } = require('./lib/authenticator');
+const { validate } = require('./lib/validator');
 
 const PORT = process.env.PORT || 7000;
 
@@ -27,23 +27,9 @@ app.all('*', (req, res) => {
 
 const server = app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 server.on('upgrade', (request, socket, head) => {
-  if (connectedToClient) {
-    rejectClient(
-      socket,
-      423,
-      'Locked',
-      'Already connected with another client.',
-    );
-    return;
-  }
-
-  if (unauthorized(request)) {
-    rejectClient(
-      socket,
-      401,
-      'Unauthorized',
-      'Unauthorized. Please, configure with a valid Auth key.',
-    );
+  const error = validate(request, connectedToClient);
+  if (error) {
+    rejectClient(socket, error.code, error.text, error.message);
     return;
   }
 

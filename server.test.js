@@ -4,12 +4,19 @@ jest.mock('ws');
 
 const WebSocket = require('ws');
 const express = require('express');
+const { version } = require('./package.json');
 
 const authenticRequest = {
-  headers: { authorization: 'test-auth-key' },
+  headers: {
+    authorization: 'test-auth-key',
+    'x-surang-version': version.split('.')[0],
+  },
 };
 const unauthenticRequest = {
-  headers: { authorization: 'test-auth-other-key' },
+  headers: {
+    authorization: 'test-auth-other-key',
+    'x-surang-version': version.split('.')[0],
+  },
 };
 const remoteRequest = {
   body: 'test-body',
