@@ -5,7 +5,7 @@
   "logo": "https://github.com/RathiRohit/surang-server/raw/main/surang-app.png",
   "env": {
     "AUTH_KEY": {
-      "description": "Secret auth key to authenticate client. Configure this same in Surang client.",
+      "description": "Secret auth key to authenticate client. Configure this same in Surang client."
     }
   },
   "image": "heroku/nodejs"
