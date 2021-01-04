@@ -51,8 +51,9 @@ Click the button below to host latest version of Surang server on Heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-(Note: `PORT` & `AUTH_KEY` will be set automatically. Get the AUTH_KEY from your
-Heroku app dashboard and configure the same in Surang client.
+Use the same `AUTH_KEY` that you configure on Heroku in your Surang client.
+
+(Note: `PORT` will be auto-configured by Heroku.)
 
 ---
 
