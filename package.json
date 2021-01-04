@@ -1,15 +1,20 @@
 {
   "name": "surang-server",
+  "description": "Self-hostable WebSocket based tunneling solution to expose your localhost.",
   "version": "0.0.1",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/RathiRohit/surang-server.git"
   },
   "author": "Rohit Rathi <rathirohitg1997@gmail.com>",
+  "contributors": [
+    "Rohit Rathi <rathirohitg1997@gmail.com>"
+  ],
   "scripts": {
     "start": "node server.js",
     "lint": "eslint .",
-    "test": "jest --passWithNoTests --coverage"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
