@@ -64,9 +64,36 @@ describe('server', () => {
     expect(mockApp.use).toHaveBeenCalledWith('mock-json-parser');
     expect(mockApp.all).toHaveBeenCalledTimes(1);
     expect(mockApp.all.mock.calls[0][0]).toBe('*');
+  });
+
+  it('should respond with 503 to incoming requests if no client', () => {
+    jest.isolateModules(() => require('./server'));
+    const mockSend = jest.fn();
+    const mockStatus = jest.fn().mockReturnValue({ send: mockSend });
+    const mockRes = { status: mockStatus };
 
     const requestCb = mockApp.all.mock.calls[0][1];
-    requestCb(remoteRequest, 'test-res');
+    requestCb('test-req', mockRes);
+
+    expect(mockStatus).toHaveBeenCalledTimes(1);
+    expect(mockStatus).toHaveBeenCalledWith(503);
+    expect(mockSend).toHaveBeenCalledTimes(1);
+    expect(mockSend).toHaveBeenCalledWith('503: There is no one on the other side of the tunnel :/');
+  });
+
+  it('should forward request to WebSocketServer if client is connected', () => {
+    process.env.AUTH_KEY = 'test-auth-key';
+    jest.isolateModules(() => require('./server'));
+    const mockStatus = jest.fn();
+    const mockRes = { status: mockStatus, end: jest.fn() };
+
+    const upgradeCb = mockServer.on.mock.calls[0][1];
+    upgradeCb(authenticRequest, mockSocket);
+
+    const requestCb = mockApp.all.mock.calls[0][1];
+    requestCb(remoteRequest, mockRes);
+
+    expect(mockStatus).toHaveBeenCalledTimes(0);
     expect(WebSocket.mock.ws.send).toHaveBeenCalledTimes(1);
     expect(JSON.parse(WebSocket.mock.ws.send.mock.calls[0][0])).toEqual(
       expectedRequestMsg,

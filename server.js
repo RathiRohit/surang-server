@@ -22,7 +22,11 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.all('*', (req, res) => {
-  wss.handleRequest(req, res);
+  if (connectedToClient) {
+    wss.handleRequest(req, res);
+    return;
+  }
+  res.status(503).send('503: There is no one on the other side of the tunnel :/');
 });
 
 const server = app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
